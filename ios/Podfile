@@ -1,9 +1,17 @@
 platform :ios, '12.0'
 workspace 'Runner.xcworkspace'
 
-ENV['FLUTTER_ROOT'] ||= File.expand_path('../../flutter')
-load File.join(ENV['FLUTTER_ROOT'], 'packages', 'flutter_tools', 'bin', 'podhelper.rb')
+# Set the path to Flutter installation
+flutter_application_path = File.expand_path('..')
+load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
 
 target 'Runner' do
-  install_all_flutter_pods(File.dirname(File.realpath(__FILE__)))
+  install_all_flutter_pods(flutter_application_path)
+end
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
 end
