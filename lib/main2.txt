@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+import 'database_helper.txt';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final dbHelper = DatabaseHelper();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('SQLite Example'),
+      ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: dbHelper.getItems(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final items = snapshot.data!;
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return ListTile(
+                title: Text(item['name']),
+                subtitle: Text(item['description'] ?? ''),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () async {
+                    await dbHelper.deleteItem(item['id']);
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await dbHelper.insertItem({
+            'name': 'New Item',
+            'description': 'Description of the new item',
+          });
+          setState(() {});
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}

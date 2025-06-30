@@ -1,0 +1,27 @@
+import 'package:device_preview/device_preview.dart';
+
+import 'package:bigboos/screens/folder_screen.dart';
+import 'package:flutter/material.dart';
+// import 'folder_list_screen.dart';
+
+void main() {
+  runApp(
+    DevicePreview(
+      builder: (context) => MyApp(),
+    ),
+  );
+  // runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Folder & File App',
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: FolderListScreen(),
+    );
+  }
+}
