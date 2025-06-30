@@ -1,0 +1,30 @@
+name: Generate iOS Build Files
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Generate iOS project files
+      run: flutter build ios --no-codesign
+
+    - name: Commit generated iOS files
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Generate iOS build files"
+        git push
