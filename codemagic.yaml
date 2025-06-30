@@ -7,6 +7,9 @@ workflows:
       groups:
         - app-store-credentials
     scripts:
+      - name: Run flutter build ios (generate podhelper.rb)
+        script: flutter build ios --release --no-codesign
+
       - name: Decode App Store Connect API key
         script: echo $APP_STORE_PRIVATE_KEY | base64 --decode > ~/auth_key.p8
 
