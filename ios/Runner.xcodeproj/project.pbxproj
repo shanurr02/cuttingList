@@ -372,7 +372,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cutlist.cuttinglist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_VERSION = 5.d:\AppDevFlutter\bigBossFeb\bigboos (2)\bigboos\codemagic.yaml0;
+				SWIFT_VERSION = 5.d;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile;
