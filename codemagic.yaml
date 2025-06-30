@@ -1,0 +1,36 @@
+workflows:
+  ios-release:
+    name: iOS App Store Upload
+    environment:
+      flutter: stable
+      xcode: latest
+      groups:
+        - app-store-credentials
+    scripts:
+      - name: Decode App Store Connect API key
+        script: echo $APP_STORE_PRIVATE_KEY | base64 --decode > ~/auth_key.p8
+
+      - name: Get Flutter packages
+        script: flutter pub get
+
+      - name: Clean project
+        script: flutter clean
+
+      - name: Build IPA (release, no code signing)
+        script: flutter build ipa --release --no-codesign
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+
+    publishing:
+      app_store_connect:
+        api_key: ~/auth_key.p8
+        key_id: "32C28FF4US"
+        issuer_id: "d6c7772b-fcdf-41f7-ae18-2580a1c3d551"
+        submit_to_testflight: true
+        submit_to_app_store: true
+        app_identifier: "com.cutlist.cuttinglist"
+        app_name: "Cutting List"
+        version: "1.0.0"
+        build_number: "1" 
+        release_notes: "Initial release of Cutting List app for iOS."
